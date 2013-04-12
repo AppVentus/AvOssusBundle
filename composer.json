@@ -10,7 +10,7 @@
             "name": "Paul Andrieux (AppVentus)",
             "email": "paul@appventus.com",
             "homepage": "http://appventus.com"
-        },
+        }
     ],
     "require-dev": {
         "symfony/class-loader": "2.*"
