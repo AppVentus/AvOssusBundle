@@ -27,16 +27,16 @@ class OssusProvider extends \Faker\Provider\Base
 
     public static function imageLink($width = 200, $height = 150, $type = '')
     {
-        return sprintf("http://%s/%d/%d/%s", self::IMAGE_PROVIDER, $width, $height, $type);
+        return sprintf('http://%s/%d/%d/%s', self::IMAGE_PROVIDER, $width, $height, $type);
     }
 
     public function image($dir, $width = null, $height = null, $type= '')
     {
         $width = $width ?: rand(100,300);
         $height = $height ?: rand(100,300);
-        $fileName = uniqid("image_{$width}x{$height}_");
+        $fileName = uniqid('image_{$width}x{$height}_');
         $imageName = sprintf('%s/%s/%s.png', $this->container->getParameter('media_path'), $dir, $fileName);
-        $image = sprintf("http://%s/%d/%d/%s", self::IMAGE_PROVIDER, $width, $height, $type);
+        $image = sprintf('http://%s/%d/%d/%s', self::IMAGE_PROVIDER, $width, $height, $type);
 
         if (! is_dir(dirname($imageName))) {
             mkdir(dirname($imageName), 0777, true);
