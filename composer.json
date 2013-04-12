@@ -18,10 +18,5 @@
     "autoload": {
         "psr-0": { "AppVentus\\OssusBundle": "" }
     },
-    "target-dir": "AppVentus/OssusdeBundle",
-    "extra": {
-        "branch-alias": {
-            "dev-master": "master"
-        }
-    }
+    "target-dir": "AppVentus/OssusdeBundle"
 }
