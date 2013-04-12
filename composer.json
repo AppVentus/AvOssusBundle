@@ -1,0 +1,23 @@
+{
+    "name": "appventus/ossus-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony OssusBundle",
+    "keywords": ["alice", "fixtures"],
+    "homepage": "https://bitbucket.org/appventus/avossusbundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Paul Andrieux (AppVentus)",
+            "email": "paul@appventus.com",
+            "homepage": "http://appventus.com"
+        },
+    ],
+    "require-dev": {
+        "symfony/class-loader": "2.*"
+    },
+    "autoload": {
+        "psr-0": { "AppVentus\\OssusBundle": "" }
+    },
+    "target-dir": "AppVentus/OssusdeBundle",
+    "minimum-stability": "dev"
+}
