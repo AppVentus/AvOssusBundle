@@ -19,5 +19,9 @@
         "psr-0": { "AppVentus\\OssusBundle": "" }
     },
     "target-dir": "AppVentus/OssusdeBundle",
-    "minimum-stability": "dev"
+    "extra": {
+        "branch-alias": {
+            "dev-master": "master"
+        }
+    }
 }
