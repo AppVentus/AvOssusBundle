@@ -63,7 +63,7 @@ class OssusProvider extends \Faker\Provider\Base
         $width = $width ? $width : rand(100, 300);
         $height = $height ? $height : rand(100, 300);
         $fileName = uniqid('image_{$width}x{$height}_');
-        $imageName = sprintf('%s/%s/%s.png', $this->container->getParameter('ossus.media_path'), $dir, $fileName);
+        $imageName = sprintf('%s/%s/%s.png', $this->container->getParameter('av_ossus.media_path'), $dir, $fileName);
         $image = sprintf('http://%s/%d/%d/%s', self::IMAGE_PROVIDER, $width, $height, $type);
 
         if (! is_dir(dirname($imageName))) {
