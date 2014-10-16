@@ -60,17 +60,19 @@ class OssusProvider extends \Faker\Provider\Base
      */
     public function image($dir, $width = null, $height = null, $type= '')
     {
-        $width = $width ? $width : rand(100, 300);
-        $height = $height ? $height : rand(100, 300);
-        $fileName = uniqid('image_{$width}x{$height}_');
-        $imageName = sprintf('%s/%s/%s.png', $this->container->getParameter('av_ossus.media_path'), $dir, $fileName);
+        $width = $width ? $width : rand(100, 1000);
+        $height = $height ? $height : rand(100, 1000);
+        $fileName = uniqid('image_'.$width.'x'.$height.'_').'.png';
+        $baseDir = $this->container->getParameter('av_ossus.media_path');
+        $imageName = sprintf('%s/%s/%s', $baseDir, $dir, $fileName);
         $image = sprintf('http://%s/%d/%d/%s', self::IMAGE_PROVIDER, $width, $height, $type);
 
         if (! is_dir(dirname($imageName))) {
             mkdir(dirname($imageName), 0777, true);
         }
         file_put_contents($imageName, file_get_contents($image));
-        $imagePath = $dir . '/' . $fileName;
+        $baseDir = str_replace($this->container->getParameter('kernel.root_dir').'/../web/', '', $baseDir);
+        $imagePath = $baseDir . '/' . $dir . '/' . $fileName;
 
         return $imagePath;
     }
