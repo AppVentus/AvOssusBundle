@@ -51,19 +51,22 @@ class OssusProvider extends \Faker\Provider\Base
     /**
      * Find a sample image for given dimension and type and place it in the good directory
      *
-     * @param string $dir    The image upload final directory
-     * @param string $width  The image width
-     * @param string $height The image height
-     * @param string $type   Could be one the following : abstract | animals | business | cats | city | food | nightlife | fashion | people | nature | sports | technics | transport
+     * @param string $dir                The image upload final directory
+     * @param string $width              The image width
+     * @param string $height             The image height
+     * @param string $type               Could be one the following : abstract | animals | business | cats | city | food | nightlife | fashion | people | nature | sports | technics | transport
+     * @param string $height             The image height
+     * @param bool   $returnCompletePath Return the complete path or only the filename ?
      *
      * @return string The image url
      */
-    public function image($dir, $width = null, $height = null, $type= '')
+    public function image($dir, $width = null, $height = null, $type= '', $pathParameter = 'av_ossus.media_path', $returnCompletePath = false)
     {
         $width = $width ? $width : rand(100, 1000);
         $height = $height ? $height : rand(100, 1000);
         $fileName = uniqid('image_'.$width.'x'.$height.'_').'.png';
-        $baseDir = $this->container->getParameter('av_ossus.media_path');
+        $baseDir = $this->container->getParameter($pathParameter);
+        $baseDir = rtrim($baseDir, '/');
         $imageName = sprintf('%s/%s/%s', $baseDir, $dir, $fileName);
         $image = sprintf('http://%s/%d/%d/%s', self::IMAGE_PROVIDER, $width, $height, $type);
 
@@ -71,10 +74,13 @@ class OssusProvider extends \Faker\Provider\Base
             mkdir(dirname($imageName), 0777, true);
         }
         file_put_contents($imageName, file_get_contents($image));
-        $baseDir = str_replace($this->container->getParameter('kernel.root_dir').'/../web/', '', $baseDir);
-        $imagePath = $baseDir . '/' . $dir . '/' . $fileName;
+        
+        if ($returnCompletePath) {
+            $baseDir = str_replace($this->container->getParameter('kernel.root_dir').'/../web/', '', $baseDir);
+            $fileName = $baseDir . '/' . $dir . '/' . $fileName;
+        }
 
-        return $imagePath;
+        return $fileName;
     }
 
     /**
