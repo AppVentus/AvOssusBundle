@@ -91,4 +91,13 @@ class OssusProvider extends \Faker\Provider\Base
     {
         return static::randomElement(static::$zipcodes);
     }
+
+    /**
+     * Return the variable
+     * @return string
+     */
+    public static function sameAs($string)
+    {
+        return $string;
+    }
 }
