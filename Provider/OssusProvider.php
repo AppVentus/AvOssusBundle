@@ -60,7 +60,7 @@ class OssusProvider extends \Faker\Provider\Base
      *
      * @return string The image url
      */
-    public function image($dir, $width = null, $height = null, $type= '', $pathParameter = 'av_ossus.media_path', $returnCompletePath = false)
+    public function image($dir, $width = null, $height = null, $type= '', $pathParameter = 'av_ossus.media_path', $returnCompletePath = false, $maxImageUpload = 20)
     {
         $width = $width ? $width : rand(100, 1000);
         $height = $height ? $height : rand(100, 1000);
@@ -70,11 +70,32 @@ class OssusProvider extends \Faker\Provider\Base
         $imageName = sprintf('%s/%s/%s', $baseDir, $dir, $fileName);
         $image = sprintf('http://%s/%d/%d/%s', self::IMAGE_PROVIDER, $width, $height, $type);
 
+
         if (! is_dir(dirname($imageName))) {
             mkdir(dirname($imageName), 0777, true);
         }
-        file_put_contents($imageName, file_get_contents($image));
-        
+
+        /**
+         * Get path of all images in $dir
+         * @var array $images
+         */
+        $images = glob(dirname($imageName) . '/*.png');
+
+        /**
+         * Check number of images in $dir
+         * If uploaded images > $maxImageUploaded then reuse then and don't download others
+         */
+        if ($images !== false && count($images) >= $maxImageUpload) {
+            $fileName = basename($images[array_rand($images)]);
+        }
+        else {
+            /**
+             * if self::IMAGE_PROVIDER is available, download image from it, else get local image
+             */
+            $content = @file_get_contents($image);
+            file_put_contents($imageName, ($content !== false) ? $content : file_get_contents(__DIR__ . '/../Resources/public/images/default.png'));
+        }
+
         if ($returnCompletePath) {
             $baseDir = str_replace($this->container->getParameter('kernel.root_dir').'/../web/', '', $baseDir);
             $fileName = $baseDir . '/' . $dir . '/' . $fileName;
