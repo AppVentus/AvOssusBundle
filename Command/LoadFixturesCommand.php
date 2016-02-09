@@ -1,10 +1,10 @@
 <?php
+
 namespace AppVentus\OssusBundle\Command;
 
-
+use AppVentus\OssusBundle\Provider\OssusProvider;
 use Doctrine\Bundle\FixturesBundle\Command\LoadDataFixturesDoctrineCommand;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use AppVentus\OssusBundle\Provider\OssusProvider;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,14 +12,12 @@ use Symfony\Component\Finder\Finder;
 
 class LoadFixturesCommand extends LoadDataFixturesDoctrineCommand
 {
-
     protected function configure()
     {
         parent::configure();
 
         $this->setName('ossus:fixtures:load');
         $this->addOption('locale', null, InputOption::VALUE_REQUIRED, 'The Faker locale to use.', 'fr_FR');
-
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -36,12 +34,12 @@ class LoadFixturesCommand extends LoadDataFixturesDoctrineCommand
         }
 
         $files = $input->getOption('fixtures');
-        $fixtures = array();
+        $fixtures = [];
 
         if ($files) {
-            $fixtures = is_array($files) ? $files : array($files);
+            $fixtures = is_array($files) ? $files : [$files];
         } else {
-            $paths = array();
+            $paths = [];
             foreach ($this->getApplication()->getKernel()->getBundles() as $bundle) {
                 $paths[] = $bundle->getPath().'/DataFixtures/ORM';
             }
@@ -70,14 +68,14 @@ class LoadFixturesCommand extends LoadDataFixturesDoctrineCommand
 
         sort($fixtures);
 
-        \Nelmio\Alice\Fixtures::load($fixtures, $em, array(
-            'locale' => $input->getOption('locale'),
-            'providers' => array(
-                new OssusProvider($this->getContainer())
-            ),
-            'logger' => function($message) use ($output) {
+        \Nelmio\Alice\Fixtures::load($fixtures, $em, [
+            'locale'    => $input->getOption('locale'),
+            'providers' => [
+                new OssusProvider($this->getContainer()),
+            ],
+            'logger' => function ($message) use ($output) {
                 $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
-            }
-        ));
+            },
+        ]);
     }
 }
