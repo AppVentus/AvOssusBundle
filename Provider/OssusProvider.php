@@ -124,4 +124,24 @@ class OssusProvider extends \Faker\Provider\Base
     {
         return $string;
     }
+
+    /**
+     * @param string $phoneNumber
+     *
+     * @return PhoneNumber
+     */
+    public function phone($phoneNumber = null)
+    {
+
+        try {
+            if (is_null($phoneNumber)) {
+                $phoneNumber = '+33' . rand(111111111, 999999999);
+            }
+            $transformer = new \Misd\PhoneNumberBundle\Form\DataTransformer\PhoneNumberToStringTransformer();
+
+            return $transformer->reverseTransform($phoneNumber);
+        } catch (\Exception $e) {
+            throw new \Exception("To use 'phone', you need to install misd/phone-number-bundle first.");
+        }
+    }
 }

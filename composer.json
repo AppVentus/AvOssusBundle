@@ -15,6 +15,9 @@
     "require-dev": {
         "symfony/class-loader": "2.*"
     },
+    "suggest": {
+        "misd/phone-number-bundle": "^1.1"
+    },
     "autoload": {
         "psr-0": { "AppVentus\\OssusBundle": "" }
     },
